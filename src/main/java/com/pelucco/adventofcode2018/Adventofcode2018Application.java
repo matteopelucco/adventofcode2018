@@ -1,39 +1,32 @@
 package com.pelucco.adventofcode2018;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.annotation.ComponentScan;
+
+import com.pelucco.adventofcode2018.solvers.Day1Solver;
 
 @SpringBootApplication
+@ComponentScan
 public class Adventofcode2018Application implements CommandLineRunner {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		SpringApplication.run(Adventofcode2018Application.class, args);
 	}
+	
+	
+	@Autowired
+	Day1Solver d1Solver;
 
 	@Override
 	public void run(String... args) throws Exception {
-		String fileName = "/day/1/input.txt";
-
-		File file = new ClassPathResource(fileName).getFile();
-
-		Scanner sc = new Scanner(file);
-		List<String> lines = new ArrayList<String>();
-		while (sc.hasNextLine()) {
-			lines.add(sc.nextLine());
-		}
-
-		String[] arr = lines.toArray(new String[0]);
-		for (String s : arr) {
-			System.out.println(s);
-		}
+		
+		d1Solver.solve();
+		
 
 	}
 }
