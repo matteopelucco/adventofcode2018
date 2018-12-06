@@ -61,7 +61,7 @@ public class Day3Solver extends AbstractSolver {
 			Claim claimI = claims.get(i);
 			//if (overlappingClaims.contains(claimI.getId())) continue;
 			if (notOverlappingClaim != null) break;
-			for (int k = 0; k < claims.size(); k++) {
+			for (int k = i+1; k < claims.size(); k++) {
 				Claim claimK = claims.get(k);
 				
 				log.info("comparing {} with {}. Remaining {} claims to check (found {} overlapping claims so far..)", claimI.getId(), claimK.getId(), claims.size() - i, overlappingClaims.size());
@@ -70,12 +70,11 @@ public class Day3Solver extends AbstractSolver {
 				if (doOverlap(claimI, claimK)) {
 					//overlappingClaims.add(claimI.getId());
 					//overlappingClaims.add(claimK.getId());
-					continue;
-				} else {
-					if (k == (claims.size() - 1)) {
-						notOverlappingClaim = claimI;
-						break;
-					}
+					break;
+				} 
+				if (k == (claims.size() - 1)) {
+					notOverlappingClaim = claimI;
+					break;
 				}
 				
 				
