@@ -36,15 +36,60 @@ public class Day2Solver implements Solver {
 		checksumMap.put("2", 0);
 		checksumMap.put("3", 0);
 		
-		List<String> frequencyChanges = readFrequencies(inputFile);
-		frequencyChanges.stream().forEach(x -> checkValues(x, 2));
-		frequencyChanges.stream().forEach(x -> checkValues(x, 3));
+		List<String> boxes = readFrequencies(inputFile);
+		boxes.stream().forEach(x -> checkValues(x, 2));
+		boxes.stream().forEach(x -> checkValues(x, 3));
 		
 		log.info("final result: {}", checksumMap.get("2") * checksumMap.get("3"));
+		
+		// if sorted, the 2 boxes should be close, so we just need to compare pos x with pos x+1
+		Collections.sort(boxes);
+		
+		String s1 = "";
+		String s2 = ""; 
+		
+		for (int i = 0; i < boxes.size(); i++) {
+			
+			if (i < boxes.size() -1) {
+				s1 = boxes.get(i);
+				s2 = boxes.get(i+1);
+				
+				log.info("---{}---", i);
+				log.info("s1: {}", s1);
+				log.info("s2: {}", s2);
+				
+				if (findDifferentLetters(s1, s2) == 1) {
+					break; // assuming only 1 in the set
+				}
+				
+			}
+			
+			// here, we have s1, and s2 as the right candidates
+		}
+		
+		
+		
 		
 		
 	}
 	
+	// assuming s1, s2 of the same length
+	private int findDifferentLetters(String s1, String s2) {
+		int count = 0; 
+		String remainingStr = ""; 
+		for (int i = 0; i < s1.length(); i++) {
+			char c1 = s1.charAt(i);
+			char c2 = s2.charAt(i);
+			if (c1 == c2) {
+				remainingStr = remainingStr + Character.toString(c1);
+				continue;
+			}
+			count++;
+		}
+		log.info("remainingStr: {}", remainingStr);
+		return count;
+	}
+
 	private void checkValues(String x, int occ) {
 		
 		log.info("x: {}", x);
