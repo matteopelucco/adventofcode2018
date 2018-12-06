@@ -56,40 +56,31 @@ public class Day3Solver extends AbstractSolver {
 		
 		
 		
-		Claim notOverlappingClaim = null;
 		for (int i = 0; i < claims.size(); i++) {
 			Claim claimI = claims.get(i);
-			//if (overlappingClaims.contains(claimI.getId())) continue;
-			if (notOverlappingClaim != null) break;
-			for (int k = i+1; k < claims.size(); k++) {
+			if (overlappingClaims.contains(claimI.getId())) continue;
+			
+			for (int k = 0; k < claims.size(); k++) {
 				Claim claimK = claims.get(k);
+				if (overlappingClaims.contains(claimK.getId())) continue;
 				
 				log.info("comparing {} with {}. Remaining {} claims to check (found {} overlapping claims so far..)", claimI.getId(), claimK.getId(), claims.size() - i, overlappingClaims.size());
-				
-				//if (overlappingClaims.contains(claimK.getId())) continue;
 				if (doOverlap(claimI, claimK)) {
-					//overlappingClaims.add(claimI.getId());
-					//overlappingClaims.add(claimK.getId());
-					break;
-				} 
-				if (k == (claims.size() - 1)) {
-					notOverlappingClaim = claimI;
-					break;
+					if (!overlappingClaims.contains(claimI.getId())) overlappingClaims.add(claimI.getId());
+					if (!overlappingClaims.contains(claimK.getId())) overlappingClaims.add(claimK.getId());
 				}
-				
-				
 				
 			}
 			
 		}
 		
-		log.info("NotOverlappingClaim: {}", notOverlappingClaim.getId());
+		//log.info("NotOverlappingClaim: {}", notOverlappingClaim.getId());
 		
-		//List<Claim> notOverlappingClaims = claims.stream().filter(x -> !overlappingClaims.contains(x.getId())).collect(Collectors.toList());
+		List<Claim> notOverlappingClaims = claims.stream().filter(x -> !overlappingClaims.contains(x.getId())).collect(Collectors.toList());
 		
-		//log.info("notOverlappingClaims: {}, id0 = {}", notOverlappingClaims.size(), notOverlappingClaims.get(0).getId());
+		log.info("notOverlappingClaims: {}, id0 = {}", notOverlappingClaims.size(), notOverlappingClaims.size() > 0 ? notOverlappingClaims.get(0).getId() : "none");
 		
-		log.info("overlaping claims: {}", overlappingClaims.size()) ;
+		log.info("overlapping claims: {}", overlappingClaims.size()) ;
 	}
 
 	private boolean doOverlap(Claim claimI, Claim claimK) {
