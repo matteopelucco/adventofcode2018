@@ -18,7 +18,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Day1Solver implements Solver {
+public class Day1Solver extends AbstractSolver {
 
 	Logger log = LoggerFactory.getLogger(Day1Solver.class);
 	
@@ -31,7 +31,7 @@ public class Day1Solver implements Solver {
 	@Override
 	public void solve() {
 		
-		List<Integer> frequencyChanges = readFrequencies(inputFile);
+		List<Integer> frequencyChanges = readFrequenciesAsListOfInteger(inputFile);
 		frequencyChanges.stream().forEach(x -> {applyFrequency(x);});
 		log.info("first value: {}", actualFrequency);
 		
@@ -56,39 +56,6 @@ public class Day1Solver implements Solver {
 		actualFrequency = actualFrequency + x;	
 	}
 	
-	private List<Integer> readFrequencies(Resource inputFile2) {
-		Scanner sc = null;
-		try {
-			sc = new Scanner(inputFile.getFile());
-			List<String> lines = new ArrayList<String>();
-			while (sc.hasNextLine()) {
-				lines.add(sc.nextLine());
-			}
-			
-			
-			String[] arr = lines.toArray(new String[0]);
-			Stream<String> stream = Arrays.stream(arr);			
-			List<Integer> intList = stream
-                    .map(Integer::valueOf)
-                    .collect(Collectors.toList());
-			
-			// just for debug purposes
-			intList.stream().forEach(x -> log.info("{}", x));
-			
-			return intList;
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (sc != null) sc.close();
-		}
-		
-		
-		return Collections.EMPTY_LIST;
-	}
+	
 
 }
