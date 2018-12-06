@@ -1,7 +1,11 @@
 package com.pelucco.adventofcode2018.solvers;
 
+import java.awt.Rectangle;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -24,12 +28,97 @@ public class Day3Solver extends AbstractSolver {
 		
 		List<String> claimsStringList = readFrequenciesAsListOfString(inputFile);
 		List<Claim> claims = claimsStringList.stream().map(x -> new Claim(x)).collect(Collectors.toList());
+		Map<String, Integer> commonSquaresMap = new LinkedHashMap<String, Integer>();
+		// a claim overlaps another one if at least 1 covered coordinate is in common
 		
-		// finding claim area
+		List<String> overlappingClaims = new LinkedList<String>();
 		
-		Claim max = claims.stream().max(Comparator.comparing(Claim::getX1)).orElseThrow(NoSuchElementException::new);
 		
-		log.info("max: {}", max) ;
+		for (int i = 0; i < claims.size(); i++) {
+			List<String> coordinates = claims.get(i).getCoordinates();
+			for (String s : coordinates) {
+				if (commonSquaresMap.containsKey(s)) {
+					commonSquaresMap.put(s, commonSquaresMap.get(s) + 1);
+				} else {
+					commonSquaresMap.put(s, 1);
+				}
+			}
+		}
+		
+		Map<String, Integer> collect = commonSquaresMap.entrySet().stream()
+				.filter(x -> x.getValue() > 1)
+				.collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue()));
+		
+		log.info("collect: {}", collect.size());
+		
+		
+		// 2nd part
+		
+		
+		
+		Claim notOverlappingClaim = null;
+		for (int i = 0; i < claims.size(); i++) {
+			Claim claimI = claims.get(i);
+			//if (overlappingClaims.contains(claimI.getId())) continue;
+			if (notOverlappingClaim != null) break;
+			for (int k = 0; k < claims.size(); k++) {
+				Claim claimK = claims.get(k);
+				
+				log.info("comparing {} with {}. Remaining {} claims to check (found {} overlapping claims so far..)", claimI.getId(), claimK.getId(), claims.size() - i, overlappingClaims.size());
+				
+				//if (overlappingClaims.contains(claimK.getId())) continue;
+				if (doOverlap(claimI, claimK)) {
+					//overlappingClaims.add(claimI.getId());
+					//overlappingClaims.add(claimK.getId());
+					continue;
+				} else {
+					if (k == (claims.size() - 1)) {
+						notOverlappingClaim = claimI;
+						break;
+					}
+				}
+				
+				
+				
+			}
+			
+		}
+		
+		log.info("NotOverlappingClaim: {}", notOverlappingClaim.getId());
+		
+		//List<Claim> notOverlappingClaims = claims.stream().filter(x -> !overlappingClaims.contains(x.getId())).collect(Collectors.toList());
+		
+		//log.info("notOverlappingClaims: {}, id0 = {}", notOverlappingClaims.size(), notOverlappingClaims.get(0).getId());
+		
+		log.info("overlaping claims: {}", overlappingClaims.size()) ;
+	}
+
+	private boolean doOverlap(Claim claimI, Claim claimK) {
+		
+		
+		Rectangle interception = claimI.getRectangle().intersection(claimK.getRectangle());
+		return !interception.isEmpty();
+		
+//		List<String> coordinatesI = claimI.getCoordinates();
+//		List<String> coordinatesK = claimK.getCoordinates();
+//		for (String s : coordinatesI) {
+//			if (coordinatesK.contains(s)) {
+//				return true;
+//			}
+//		}
+//		return false;
+	}
+	
+	private Map<String, String> extractCommonSquares(Claim claimI, Claim claimK) {
+		List<String> coordinatesI = claimI.getCoordinates();
+		List<String> coordinatesK = claimK.getCoordinates();
+		 Map<String, String> commonCoordinates = new LinkedHashMap<String, String>();
+		for (String s : coordinatesI) {
+			if (coordinatesK.contains(s)) {
+				commonCoordinates.put(s, s);
+			}
+		}
+		return commonCoordinates;
 	}
 
 }
