@@ -53,18 +53,21 @@ public class Day3Solver extends AbstractSolver {
 		
 		
 		// 2nd part
-		
+		Rectangle r1 = new Rectangle(0, 0, 1, 1);
+		Rectangle r2 = new Rectangle(0, 1, 1, 1);
+		log.info("i: {}", r1.intersects(r2));
 		
 		
 		for (int i = 0; i < claims.size(); i++) {
 			Claim claimI = claims.get(i);
-			if (overlappingClaims.contains(claimI.getId())) continue;
+			// if (overlappingClaims.contains(claimI.getId())) continue;
 			
 			for (int k = 0; k < claims.size(); k++) {
+				if (i == k) continue;
 				Claim claimK = claims.get(k);
-				if (overlappingClaims.contains(claimK.getId())) continue;
+				// if (overlappingClaims.contains(claimK.getId())) continue;
 				
-				log.info("comparing {} with {}. Remaining {} claims to check (found {} overlapping claims so far..)", claimI.getId(), claimK.getId(), claims.size() - i, overlappingClaims.size());
+				// log.info("comparing {} with {}. Remaining {} claims to check (found {} overlapping claims so far..)", claimI.getId(), claimK.getId(), claims.size() - i, overlappingClaims.size());
 				if (doOverlap(claimI, claimK)) {
 					if (!overlappingClaims.contains(claimI.getId())) overlappingClaims.add(claimI.getId());
 					if (!overlappingClaims.contains(claimK.getId())) overlappingClaims.add(claimK.getId());
@@ -74,41 +77,14 @@ public class Day3Solver extends AbstractSolver {
 			
 		}
 		
-		//log.info("NotOverlappingClaim: {}", notOverlappingClaim.getId());
-		
 		List<Claim> notOverlappingClaims = claims.stream().filter(x -> !overlappingClaims.contains(x.getId())).collect(Collectors.toList());
-		
 		log.info("notOverlappingClaims: {}, id0 = {}", notOverlappingClaims.size(), notOverlappingClaims.size() > 0 ? notOverlappingClaims.get(0).getId() : "none");
-		
 		log.info("overlapping claims: {}", overlappingClaims.size()) ;
 	}
 
 	private boolean doOverlap(Claim claimI, Claim claimK) {
-		
-		
-		Rectangle interception = claimI.getRectangle().intersection(claimK.getRectangle());
-		return !interception.isEmpty();
-		
-//		List<String> coordinatesI = claimI.getCoordinates();
-//		List<String> coordinatesK = claimK.getCoordinates();
-//		for (String s : coordinatesI) {
-//			if (coordinatesK.contains(s)) {
-//				return true;
-//			}
-//		}
-//		return false;
-	}
-	
-	private Map<String, String> extractCommonSquares(Claim claimI, Claim claimK) {
-		List<String> coordinatesI = claimI.getCoordinates();
-		List<String> coordinatesK = claimK.getCoordinates();
-		 Map<String, String> commonCoordinates = new LinkedHashMap<String, String>();
-		for (String s : coordinatesI) {
-			if (coordinatesK.contains(s)) {
-				commonCoordinates.put(s, s);
-			}
-		}
-		return commonCoordinates;
+		Rectangle intersection = claimK.getRectangle().intersection(claimI.getRectangle());
+		return !intersection.isEmpty();
 	}
 
 }
