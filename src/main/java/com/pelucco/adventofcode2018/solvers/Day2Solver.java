@@ -20,7 +20,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Day2Solver implements Solver {
+public class Day2Solver extends AbstractSolver {
 
 	Logger log = LoggerFactory.getLogger(Day2Solver.class);
 	
@@ -36,13 +36,13 @@ public class Day2Solver implements Solver {
 		checksumMap.put("2", 0);
 		checksumMap.put("3", 0);
 		
-		List<String> boxes = readFrequencies(inputFile);
+		List<String> boxes = readFrequenciesAsListOfString(inputFile);
 		boxes.stream().forEach(x -> checkValues(x, 2));
 		boxes.stream().forEach(x -> checkValues(x, 3));
 		
 		log.info("final result: {}", checksumMap.get("2") * checksumMap.get("3"));
 		
-		// if sorted, the 2 boxes should be close, so we just need to compare pos x with pos x+1
+		// if alphabetical sorted, the 2 similar boxes should be close, so we just need to compare pos x with pos x+1
 		Collections.sort(boxes);
 		
 		String s1 = "";
@@ -61,15 +61,10 @@ public class Day2Solver implements Solver {
 				if (findDifferentLetters(s1, s2) == 1) {
 					break; // assuming only 1 in the set
 				}
-				
 			}
 			
 			// here, we have s1, and s2 as the right candidates
 		}
-		
-		
-		
-		
 		
 	}
 	
@@ -118,36 +113,6 @@ public class Day2Solver implements Solver {
 		
 	}
 
-	private void check2Values(String x) {
-		
-	}
-
-	private List<String> readFrequencies(Resource inputFile2) {
-		Scanner sc = null;
-		try {
-			sc = new Scanner(inputFile.getFile());
-			List<String> stringList = new ArrayList<String>();
-			while (sc.hasNextLine()) {
-				stringList.add(sc.nextLine());
-			}
-			
-			// just for debug purposes
-			stringList.stream().forEach(x -> log.info("{}", x));
-			
-			return stringList;
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (sc != null) sc.close();
-		}
-		
-		
-		return Collections.EMPTY_LIST;
-	}
+	
 
 }
