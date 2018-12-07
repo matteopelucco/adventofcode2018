@@ -53,10 +53,6 @@ public class Day3Solver extends AbstractSolver {
 		
 		
 		// 2nd part
-		Rectangle r1 = new Rectangle(0, 0, 1, 1);
-		Rectangle r2 = new Rectangle(0, 1, 1, 1);
-		log.info("i: {}", r1.intersects(r2));
-		
 		
 		for (int i = 0; i < claims.size(); i++) {
 			Claim claimI = claims.get(i);
@@ -77,8 +73,8 @@ public class Day3Solver extends AbstractSolver {
 			
 		}
 		
-		List<Claim> notOverlappingClaims = claims.stream().filter(x -> !overlappingClaims.contains(x.getId())).collect(Collectors.toList());
-		log.info("notOverlappingClaims: {}, id0 = {}", notOverlappingClaims.size(), notOverlappingClaims.size() > 0 ? notOverlappingClaims.get(0).getId() : "none");
+		List<Claim> nonOverlappingClaims = claims.stream().filter(x -> !overlappingClaims.contains(x.getId())).collect(Collectors.toList());
+		log.info("nonOverlappingClaims: {}, id0 = {}", nonOverlappingClaims.size(), nonOverlappingClaims.size() > 0 ? nonOverlappingClaims.get(0).getId() : "none");
 		log.info("overlapping claims: {}", overlappingClaims.size()) ;
 	}
 
