@@ -11,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import com.pelucco.adventofcode2018.solvers.Day1Solver;
 import com.pelucco.adventofcode2018.solvers.Day2Solver;
 import com.pelucco.adventofcode2018.solvers.Day3Solver;
+import com.pelucco.adventofcode2018.solvers.Day4Solver;
 
 @SpringBootApplication
 @ComponentScan
@@ -29,13 +30,16 @@ public class Adventofcode2018Application implements CommandLineRunner {
 	
 	@Autowired
 	Day3Solver d3Solver;
+	
+	@Autowired
+	Day4Solver d4Solver;
 
 	@Override
 	public void run(String... args) throws Exception {
 		
 		// d1Solver.solve();
 		// d2Solver.solve();
-		d3Solver.solve();
-
+		//d3Solver.solve();
+		d4Solver.solve();
 	}
 }
