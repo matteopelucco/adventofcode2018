@@ -39,7 +39,7 @@ public class Adventofcode2018Application implements CommandLineRunner {
 		
 		// d1Solver.solve();
 		// d2Solver.solve();
-		//d3Solver.solve();
+		// d3Solver.solve();
 		d4Solver.solve();
 	}
 }

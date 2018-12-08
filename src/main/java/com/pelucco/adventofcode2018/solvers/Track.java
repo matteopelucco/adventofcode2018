@@ -8,11 +8,18 @@ import org.apache.commons.lang.StringUtils;
 
 public class Track {
 
+	private static final String AWAKEN = ".";
+	public static final String ASLEEP = "#";
+	
 	private String id;
 	private LocalDateTime start;
 	private int lastMinute;
-	private String lastAction = ".";
+	private String lastAction = AWAKEN;
 	private Map<Integer, String> map = new LinkedHashMap<Integer, String>();
+	public Map<Integer, String> getMap() {
+		return map;
+	}
+
 	int asleep = 0; 
 	int awaken = 0;
 
@@ -32,19 +39,19 @@ public class Track {
 	public void fallsAt(LocalDateTime t) {
 		int m = t.getMinute();
 		for (int i = this.lastMinute; i < m; i++) {
-			map.put(i, ".");
+			map.put(i, AWAKEN);
 		}
 		this.lastMinute = m;
-		this.lastAction = "#";
+		this.lastAction = ASLEEP;
 	}
 
 	public void wakesUpAt(LocalDateTime t) {
 		int m = t.getMinute();
 		for (int i = this.lastMinute; i < m; i++) {
-			map.put(i, "#");
+			map.put(i, ASLEEP);
 		}
 		this.lastMinute = m;
-		this.lastAction = ".";
+		this.lastAction = AWAKEN;
 	}
 
 	@Override
@@ -64,7 +71,7 @@ public class Track {
 		}
 		
 		for (String s : map.values()) {
-			if (s == "#") {
+			if (s == ASLEEP) {
 				asleep++;
 			} else {
 				awaken++;
@@ -98,7 +105,7 @@ public class Track {
 	}
 
 	public boolean isAsleepAt(int i) {
-		return map.get(i).equals("#");
+		return map.get(i).equals(ASLEEP);
 	}
 
 }
